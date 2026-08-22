@@ -7,6 +7,12 @@
 <meta content="Pragovi stvarnosti — retrospektivna izložba Dinke Pignon, 10. septembar–1. oktobar 2026, Kuća legata, Beograd." name="description"/>
 <title>Pragovi stvarnosti — Dinka Pignon</title>
 <link href="styles.css" rel="stylesheet"/>
+
+<style>
+html { scroll-behavior: auto !important; }
+#exhibition, #works, #artists, #curator { scroll-margin-top: 72px; }
+</style>
+
 </head>
 <body id="top">
 <header class="site-header">
@@ -210,50 +216,6 @@
 <footer>
 <p>Pragovi stvarnosti · Dinka Pignon · Beograd · 2026</p>
 </footer>
-
-<script>
-(function () {
-  const links = document.querySelectorAll('a[href^="#"]');
-
-  async function settleImages() {
-    const images = Array.from(document.images);
-    await Promise.all(images.map(img => {
-      if (img.complete) return Promise.resolve();
-      if (img.decode) return img.decode().catch(() => {});
-      return new Promise(resolve => {
-        img.addEventListener('load', resolve, {once:true});
-        img.addEventListener('error', resolve, {once:true});
-      });
-    }));
-  }
-
-  links.forEach(link => {
-    link.addEventListener('click', async function (event) {
-      const id = this.getAttribute('href');
-      if (!id || id === '#') return;
-
-      const target = document.querySelector(id);
-      if (!target) return;
-
-      event.preventDefault();
-      await settleImages();
-
-      const header = document.querySelector('.site-header');
-      const headerHeight = header ? header.getBoundingClientRect().height : 0;
-      const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 12;
-
-      window.scrollTo({top: top, behavior: 'auto'});
-      history.replaceState(null, '', id);
-
-      // Re-assert after layout has fully settled.
-      requestAnimationFrame(() => {
-        const correctedTop = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 12;
-        window.scrollTo({top: correctedTop, behavior: 'auto'});
-      });
-    });
-  });
-})();
-</script>
 
 </body>
 </html>
